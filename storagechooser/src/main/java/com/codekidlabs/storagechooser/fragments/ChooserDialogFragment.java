@@ -46,7 +46,6 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
     private ViewGroup mContainer;
 
     private List<Storages> storagesList;
-    private List<String> customStoragesList;
     private String TAG = "StorageChooser";
     private MemoryUtil memoryUtil = new MemoryUtil();
     private FileUtil fileUtil = new FileUtil();
@@ -259,26 +258,27 @@ public class ChooserDialogFragment extends android.app.DialogFragment {
         storagesList.add(storages);
 
 
-        for (File f : volumeList) {
-            if (!f.getName().equals(MemoryUtil.SELF_DIR_NAME)
-                    && !f.getName().equals(MemoryUtil.EMULATED_DIR_KNOX)
-                    && !f.getName().equals(MemoryUtil.EMULATED_DIR_NAME)
-                    && !f.getName().equals(MemoryUtil.SDCARD0_DIR_NAME)
-                    && !f.getName().equals(MemoryUtil.CONTAINER)) {
-                Storages sharedStorage = new Storages();
-                String fPath = f.getAbsolutePath();
-                sharedStorage.setStorageTitle(f.getName());
-                sharedStorage.setMemoryTotalSize(memoryUtil.formatSize(memoryUtil.getTotalMemorySize(fPath)));
-                sharedStorage.setMemoryAvailableSize(memoryUtil.formatSize(memoryUtil.getAvailableMemorySize(fPath)));
-                sharedStorage.setStoragePath(fPath);
-                storagesList.add(sharedStorage);
+        if (volumeList != null) {
+            for (File f : volumeList) {
+                if (!f.getName().equals(MemoryUtil.SELF_DIR_NAME)
+                        && !f.getName().equals(MemoryUtil.EMULATED_DIR_KNOX)
+                        && !f.getName().equals(MemoryUtil.EMULATED_DIR_NAME)
+                        && !f.getName().equals(MemoryUtil.SDCARD0_DIR_NAME)
+                        && !f.getName().equals(MemoryUtil.CONTAINER)) {
+                    Storages sharedStorage = new Storages();
+                    String fPath = f.getAbsolutePath();
+                    sharedStorage.setStorageTitle(f.getName());
+                    sharedStorage.setMemoryTotalSize(memoryUtil.formatSize(memoryUtil.getTotalMemorySize(fPath)));
+                    sharedStorage.setMemoryAvailableSize(memoryUtil.formatSize(memoryUtil.getAvailableMemorySize(fPath)));
+                    sharedStorage.setStoragePath(fPath);
+                    storagesList.add(sharedStorage);
+                }
             }
         }
 
     }
 
     // Convinience methods
-
     public static Typeface getSCTypeface(Context context, String path, boolean assets) {
         if (assets) {
             return Typeface.createFromAsset(context.getAssets(),
